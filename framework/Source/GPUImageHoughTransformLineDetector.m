@@ -42,8 +42,8 @@
     [self addFilter:thresholdEdgeDetectionFilter];
     
 #ifdef DEBUGLINEDETECTION
-    __unsafe_unretained NSMutableArray *weakIntermediateImages = _intermediateImages;
-    __unsafe_unretained GPUImageOutput<GPUImageInput> *weakFilter = thresholdEdgeDetectionFilter;
+    __weak NSMutableArray *weakIntermediateImages = _intermediateImages;
+    __weak GPUImageOutput<GPUImageInput> *weakFilter = thresholdEdgeDetectionFilter;
     [thresholdEdgeDetectionFilter setFrameProcessingCompletionBlock:^(GPUImageOutput *filter, CMTime frameTime){
         [weakIntermediateImages removeAllObjects];
         UIImage *intermediateImage = [weakFilter imageFromCurrentlyProcessedOutput];
@@ -74,7 +74,7 @@
     }
     [self addFilter:nonMaximumSuppressionFilter];
     
-    __unsafe_unretained GPUImageHoughTransformLineDetector *weakSelf = self;
+    __weak GPUImageHoughTransformLineDetector *weakSelf = self;
 #ifdef DEBUGLINEDETECTION
     weakFilter = nonMaximumSuppressionFilter;
     [nonMaximumSuppressionFilter setFrameProcessingCompletionBlock:^(GPUImageOutput *filter, CMTime frameTime){

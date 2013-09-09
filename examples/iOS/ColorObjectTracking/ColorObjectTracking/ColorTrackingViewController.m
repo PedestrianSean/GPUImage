@@ -67,7 +67,7 @@
     CGSize videoPixelSize = CGSizeMake(480.0, 640.0);
     
     positionRawData = [[GPUImageRawDataOutput alloc] initWithImageSize:videoPixelSize resultsInBGRAFormat:YES];
-    __unsafe_unretained ColorTrackingViewController *weakSelf = self;
+    __weak ColorTrackingViewController *weakSelf = self;
     [positionRawData setNewFrameAvailableBlock:^{
         GLubyte *bytesForPositionData = positionRawData.rawBytesForImage;
         CGPoint currentTrackingLocation = [weakSelf centroidFromTexture:bytesForPositionData ofSize:[positionRawData maximumOutputSize]];

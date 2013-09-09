@@ -102,8 +102,8 @@ NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRI
     [self addFilter:derivativeFilter];
 
 #ifdef DEBUGFEATUREDETECTION
-    __unsafe_unretained NSMutableArray *weakIntermediateImages = _intermediateImages;
-    __unsafe_unretained GPUImageFilter *weakFilter = derivativeFilter;
+    __weak NSMutableArray *weakIntermediateImages = _intermediateImages;
+    __weak GPUImageFilter *weakFilter = derivativeFilter;
     [derivativeFilter setFrameProcessingCompletionBlock:^(GPUImageOutput *filter, CMTime frameTime){
         UIImage *intermediateImage = [weakFilter imageFromCurrentlyProcessedOutput];
         [weakIntermediateImages addObject:intermediateImage];
@@ -138,7 +138,7 @@ NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRI
     nonMaximumSuppressionFilter = [[GPUImageThresholdedNonMaximumSuppressionFilter alloc] init];
     [self addFilter:nonMaximumSuppressionFilter];
 
-    __unsafe_unretained GPUImageHarrisCornerDetectionFilter *weakSelf = self;
+    __weak GPUImageHarrisCornerDetectionFilter *weakSelf = self;
 #ifdef DEBUGFEATUREDETECTION
     weakFilter = nonMaximumSuppressionFilter;
     [nonMaximumSuppressionFilter setFrameProcessingCompletionBlock:^(GPUImageOutput *filter, CMTime frameTime){
@@ -159,7 +159,7 @@ NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRI
 //
 //    
 //#ifdef DEBUGFEATUREDETECTION
-//    __unsafe_unretained GPUImageHarrisCornerDetectionFilter *weakSelf = self;
+//    __weak GPUImageHarrisCornerDetectionFilter *weakSelf = self;
 //    weakFilter = colorPackingFilter;
 //    [colorPackingFilter setFrameProcessingCompletionBlock:^(GPUImageOutput *filter, CMTime frameTime){
 //        NSLog(@"Triggered response from compaction filter");
@@ -170,7 +170,7 @@ NSString *const kGPUImageHarrisCornerDetectionFragmentShaderString = SHADER_STRI
 //        [weakSelf extractCornerLocationsFromImageAtFrameTime:frameTime];
 //    }];
 //#else
-//    __unsafe_unretained GPUImageHarrisCornerDetectionFilter *weakSelf = self;
+//    __weak GPUImageHarrisCornerDetectionFilter *weakSelf = self;
 //    [colorPackingFilter setFrameProcessingCompletionBlock:^(GPUImageOutput *filter, CMTime frameTime) {
 //        [weakSelf extractCornerLocationsFromImageAtFrameTime:frameTime];
 //    }];

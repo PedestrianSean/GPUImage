@@ -13,7 +13,7 @@ extern NSString *const kGPUImageThreeInputTextureVertexShaderString;
     BOOL hasSetSecondTexture, hasReceivedThirdFrame, thirdFrameWasVideo;
     BOOL thirdFrameCheckDisabled;
     
-    __unsafe_unretained id<GPUImageTextureDelegate> thirdTextureDelegate;
+    __weak id<GPUImageTextureDelegate> thirdTextureDelegate;
 }
 
 - (void)disableThirdFrameCheck;

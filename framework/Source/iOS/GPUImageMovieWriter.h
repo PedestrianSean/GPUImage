@@ -31,7 +31,7 @@ extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
     CGSize videoSize;
     GPUImageRotationMode inputRotation;
     
-    __unsafe_unretained id<GPUImageTextureDelegate> textureDelegate;
+    __weak id<GPUImageTextureDelegate> textureDelegate;
 }
 
 @property(readwrite, nonatomic) BOOL hasAudioTrack;
@@ -39,7 +39,7 @@ extern NSString *const kGPUImageColorSwizzlingFragmentShaderString;
 @property(readwrite, nonatomic) BOOL shouldInvalidateAudioSampleWhenDone;
 @property(nonatomic, copy) void(^completionBlock)(void);
 @property(nonatomic, copy) void(^failureBlock)(NSError*);
-@property(nonatomic, assign) id<GPUImageMovieWriterDelegate> delegate;
+@property(nonatomic, weak) id<GPUImageMovieWriterDelegate> delegate;
 @property(readwrite, nonatomic) BOOL encodingLiveVideo;
 @property(nonatomic, copy) BOOL(^videoInputReadyCallback)(void);
 @property(nonatomic, copy) BOOL(^audioInputReadyCallback)(void);

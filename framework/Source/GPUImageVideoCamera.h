@@ -41,7 +41,7 @@ extern NSString *const kGPUImageYUVVideoRangeConversionForLAFragmentShaderString
     BOOL captureAsYUV;
     GLuint luminanceTexture, chrominanceTexture;
 
-    __unsafe_unretained id<GPUImageVideoCameraDelegate> _delegate;
+    __weak id<GPUImageVideoCameraDelegate> _delegate;
 }
 
 /// The AVCaptureSession used to capture from the camera
@@ -72,7 +72,7 @@ extern NSString *const kGPUImageYUVVideoRangeConversionForLAFragmentShaderString
 /// These properties determine whether or not the two camera orientations should be mirrored. By default, both are NO.
 @property(readwrite, nonatomic) BOOL horizontallyMirrorFrontFacingCamera, horizontallyMirrorRearFacingCamera;
 
-@property(nonatomic, assign) id<GPUImageVideoCameraDelegate> delegate;
+@property(nonatomic, weak) id<GPUImageVideoCameraDelegate> delegate;
 
 /// @name Initialization and teardown
 

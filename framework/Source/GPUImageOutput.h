@@ -56,7 +56,7 @@ void reportAvailableMemoryForGPUImage(NSString *tag);
     BOOL processingLargeImage;
     NSUInteger outputTextureRetainCount;
     
-    __unsafe_unretained id<GPUImageTextureDelegate> firstTextureDelegate;
+    __weak id<GPUImageTextureDelegate> firstTextureDelegate;
     BOOL shouldConserveMemoryForNextFrame;
     
     BOOL allTargetsWantMonochromeData;

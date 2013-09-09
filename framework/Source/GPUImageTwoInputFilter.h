@@ -13,7 +13,7 @@ extern NSString *const kGPUImageTwoInputTextureVertexShaderString;
     BOOL hasSetFirstTexture, hasReceivedFirstFrame, hasReceivedSecondFrame, firstFrameWasVideo, secondFrameWasVideo;
     BOOL firstFrameCheckDisabled, secondFrameCheckDisabled;
     
-    __unsafe_unretained id<GPUImageTextureDelegate> secondTextureDelegate;
+    __weak id<GPUImageTextureDelegate> secondTextureDelegate;
 }
 
 - (void)disableFirstFrameCheck;

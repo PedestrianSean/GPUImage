@@ -20,7 +20,7 @@ typedef struct GPUByteColorVector GPUByteColorVector;
     BOOL outputBGRA;
     CVOpenGLESTextureRef renderTexture;
     
-    __unsafe_unretained id<GPUImageTextureDelegate> textureDelegate;
+    __weak id<GPUImageTextureDelegate> textureDelegate;
 }
 #else
 @interface GPUImageRawDataOutput : NSObject <GPUImageInput> {
@@ -31,7 +31,7 @@ typedef struct GPUByteColorVector GPUByteColorVector;
     BOOL outputBGRA;
     CVOpenGLTextureRef renderTexture;
     
-    __unsafe_unretained id<GPUImageTextureDelegate> textureDelegate;
+    __weak id<GPUImageTextureDelegate> textureDelegate;
 }
 #endif
 

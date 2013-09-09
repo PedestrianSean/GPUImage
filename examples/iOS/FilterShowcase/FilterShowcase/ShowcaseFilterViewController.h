@@ -138,7 +138,7 @@ typedef enum {
     
     IBOutlet UISwitch *facesSwitch;
     IBOutlet UILabel *facesLabel;
-    __unsafe_unretained UISlider *_filterSettingsSlider;
+    __weak UISlider *_filterSettingsSlider;
     BOOL faceThinking;
 }
 

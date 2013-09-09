@@ -1415,7 +1415,7 @@
             
             [blendFilter addTarget:filterView];
 
-            __unsafe_unretained GPUImageUIElement *weakUIElementInput = uiElementInput;
+            __weak GPUImageUIElement *weakUIElementInput = uiElementInput;
             
             [filter setFrameProcessingCompletionBlock:^(GPUImageOutput * filter, CMTime frameTime){
                 timeLabel.text = [NSString stringWithFormat:@"Time: %f s", -[startTime timeIntervalSinceNow]];
