@@ -286,15 +286,18 @@ NSString *const kGPUImageColorSwizzlingFragmentShaderString = SHADER_STRING
     dispatch_sync(movieWritingQueue, ^{
         alreadyFinishedRecording = YES;
 
-        if( assetWriter.status == AVAssetWriterStatusWriting && ! videoEncodingIsFinished )
+        if( assetWriter.status == AVAssetWriterStatusWriting )
         {
-            videoEncodingIsFinished = YES;
-            [assetWriterVideoInput markAsFinished];
-        }
-        if( assetWriter.status == AVAssetWriterStatusWriting && ! audioEncodingIsFinished )
-        {
-            audioEncodingIsFinished = YES;
-            [assetWriterAudioInput markAsFinished];
+            if( ! videoEncodingIsFinished )
+            {
+                videoEncodingIsFinished = YES;
+                [assetWriterVideoInput markAsFinished];
+            }
+            if( ! audioEncodingIsFinished )
+            {
+                audioEncodingIsFinished = YES;
+                [assetWriterAudioInput markAsFinished];
+            }
         }
         [assetWriter cancelWriting];
     });
@@ -316,15 +319,18 @@ NSString *const kGPUImageColorSwizzlingFragmentShaderString = SHADER_STRING
 
         isRecording = NO;
         dispatch_sync(movieWritingQueue, ^{
-            if( assetWriter.status == AVAssetWriterStatusWriting && ! videoEncodingIsFinished )
+            if( assetWriter.status == AVAssetWriterStatusWriting )
             {
-                videoEncodingIsFinished = YES;
-                [assetWriterVideoInput markAsFinished];
-            }
-            if( assetWriter.status == AVAssetWriterStatusWriting && ! audioEncodingIsFinished )
-            {
-                audioEncodingIsFinished = YES;
-                [assetWriterAudioInput markAsFinished];
+                if( ! videoEncodingIsFinished )
+                {
+                    videoEncodingIsFinished = YES;
+                    [assetWriterVideoInput markAsFinished];
+                }
+                if( ! audioEncodingIsFinished )
+                {
+                    audioEncodingIsFinished = YES;
+                    [assetWriterAudioInput markAsFinished];
+                }
             }
 #if (!defined(__IPHONE_6_0) || (__IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_6_0))
             // Not iOS 6 SDK

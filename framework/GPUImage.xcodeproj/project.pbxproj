@@ -1737,6 +1737,7 @@
 				HEADER_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = /include/GPUImage;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -1751,6 +1752,7 @@
 				HEADER_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = /include/GPUImage;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
