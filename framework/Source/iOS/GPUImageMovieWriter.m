@@ -327,20 +327,22 @@ NSString *const kGPUImageColorSwizzlingFragmentShaderString = SHADER_STRING
 
 - (void)finishRecording;
 {
-    [self finishRecordingWithCompletionHandler:nil];
+    [self finishRecordingWithCompletionHandler:NULL];
 }
 
 - (void)finishRecordingWithCompletionHandler:(void (^)(void))handler;
 {
     runSynchronouslyOnVideoProcessingQueue(^{
-        if (assetWriter.status == AVAssetWriterStatusCompleted || assetWriter.status == AVAssetWriterStatusCancelled
-            || assetWriter.status == AVAssetWriterStatusUnknown)
-        {
-            return;
-        }
-
-        isRecording = NO;
+        
         dispatch_sync(movieWritingQueue, ^{
+            isRecording = NO;
+            
+            if (assetWriter.status == AVAssetWriterStatusCompleted || assetWriter.status == AVAssetWriterStatusCancelled || assetWriter.status == AVAssetWriterStatusUnknown)
+            {
+                if (handler)
+                    runAsynchronouslyOnVideoProcessingQueue(handler);
+                return;
+            }
             if( assetWriter.status == AVAssetWriterStatusWriting )
             {
                 if( ! videoEncodingIsFinished )
@@ -357,7 +359,8 @@ NSString *const kGPUImageColorSwizzlingFragmentShaderString = SHADER_STRING
 #if (!defined(__IPHONE_6_0) || (__IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_6_0))
             // Not iOS 6 SDK
             [assetWriter finishWriting];
-            if (handler) handler();
+            if (handler)
+                runAsynchronouslyOnVideoProcessingQueue(handler);
 #else
             // iOS 6 SDK
             if ([assetWriter respondsToSelector:@selector(finishWritingWithCompletionHandler:)]) {
@@ -370,7 +373,8 @@ NSString *const kGPUImageColorSwizzlingFragmentShaderString = SHADER_STRING
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 [assetWriter finishWriting];
 #pragma clang diagnostic pop
-                if (handler) handler();
+                if (handler)
+                    runAsynchronouslyOnVideoProcessingQueue(handler);
             }
 #endif
         });
@@ -648,12 +652,7 @@ NSString *const kGPUImageColorSwizzlingFragmentShaderString = SHADER_STRING
         1.0f,  1.0f,
     };
     
-    static const GLfloat textureCoordinates[] = {
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        0.0f, 1.0f,
-        1.0f, 1.0f,
-    };
+    const GLfloat *textureCoordinates = [GPUImageFilter textureCoordinatesForRotation:inputRotation];
     
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, inputTextureForMovieRendering);
