@@ -142,7 +142,7 @@ typedef enum {
     BOOL faceThinking;
 }
 
-@property(readwrite, unsafe_unretained, nonatomic) IBOutlet UISlider *filterSettingsSlider;
+@property(readwrite, weak, nonatomic) IBOutlet UISlider *filterSettingsSlider;
 @property(nonatomic,retain) CIDetector*faceDetector;
 // Initialization and teardown
 - (id)initWithFilterType:(GPUImageShowcaseFilterType)newFilterType;
