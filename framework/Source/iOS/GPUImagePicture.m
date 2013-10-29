@@ -205,8 +205,8 @@
         return NO;
     }
     
-    runAsynchronouslyOnVideoProcessingQueue(^{
-        
+    void(^process)() = ^() {
+
         if (MAX(pixelSizeOfImage.width, pixelSizeOfImage.height) > 1000.0)
         {
             [self conserveMemoryForNextFrame];
@@ -228,8 +228,13 @@
         if (completion != nil) {
             completion();
         }
-    });
-    
+    };
+
+    if( completion )
+        runAsynchronouslyOnVideoProcessingQueue(process);
+    else
+        runSynchronouslyOnVideoProcessingQueue(process);
+
     return YES;
 }
 
