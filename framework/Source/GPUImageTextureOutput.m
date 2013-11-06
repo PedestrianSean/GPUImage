@@ -29,7 +29,7 @@
     [_delegate newFrameReadyFromTextureOutput:self];
 }
 
-- (NSInteger)nextAvailableTextureIndex;
+- (GLint)nextAvailableTextureIndex;
 {
     return 0;
 }

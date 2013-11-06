@@ -384,7 +384,7 @@
     });
 }
 
-- (NSInteger)nextAvailableTextureIndex;
+- (GLint)nextAvailableTextureIndex;
 {
     return 0;
 }

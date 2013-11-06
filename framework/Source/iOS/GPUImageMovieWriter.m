@@ -760,7 +760,7 @@ NSString *const kGPUImageColorSwizzlingFragmentShaderString = SHADER_STRING
         write();
 }
 
-- (NSInteger)nextAvailableTextureIndex;
+- (GLint)nextAvailableTextureIndex;
 {
     return 0;
 }
