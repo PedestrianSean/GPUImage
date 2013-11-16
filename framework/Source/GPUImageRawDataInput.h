@@ -1,4 +1,5 @@
 #import "GPUImageOutput.h"
+#import "GPUImageFilter.h"
 
 // The bytes passed into this input are not copied or retained, but you are free to deallocate them after they are used by this filter.
 // The bytes are uploaded and stored within a texture, so nothing is kept locally.
@@ -24,6 +25,7 @@ typedef enum {
 }
 
 // Initialization and teardown
+- (id)initWithColor:(GPUVector4)color size:(CGSize)imageSize;
 - (id)initWithBytes:(GLubyte *)bytesToUpload size:(CGSize)imageSize;
 - (id)initWithBytes:(GLubyte *)bytesToUpload size:(CGSize)imageSize pixelFormat:(GPUPixelFormat)pixelFormat;
 - (id)initWithBytes:(GLubyte *)bytesToUpload size:(CGSize)imageSize pixelFormat:(GPUPixelFormat)pixelFormat type:(GPUPixelType)pixelType;
@@ -32,6 +34,7 @@ typedef enum {
  */
 @property (readwrite, nonatomic) GPUPixelFormat pixelFormat;
 @property (readwrite, nonatomic) GPUPixelType   pixelType;
+@property (readwrite, nonatomic) GPUVector4     color;
 
 // Image rendering
 - (void)updateDataFromBytes:(GLubyte *)bytesToUpload size:(CGSize)imageSize;

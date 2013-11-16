@@ -12,6 +12,17 @@
 #pragma mark -
 #pragma mark Initialization and teardown
 
+- (id)initWithColor:(GPUVector4)color size:(CGSize)imageSize;
+{
+    _color = color;
+    if (!(self = [self initWithBytes:nil size:imageSize pixelFormat:GPUPixelFormatBGRA type:GPUPixelTypeUByte]))
+    {
+		return nil;
+    }
+	
+	return self;
+}
+
 - (id)initWithBytes:(GLubyte *)bytesToUpload size:(CGSize)imageSize;
 {
     if (!(self = [self initWithBytes:bytesToUpload size:imageSize pixelFormat:GPUPixelFormatBGRA type:GPUPixelTypeUByte]))
@@ -66,12 +77,38 @@
 
 - (void)uploadBytes:(GLubyte *)bytesToUpload;
 {
-    [GPUImageContext useImageProcessingContext];
-    
-	[self initializeOutputTextureIfNeeded];
+    BOOL freeBytes = NO;
+    GLuint width = (GLuint)ceilf(uploadedImageSize.width);
+    GLuint height = (GLuint)ceilf(uploadedImageSize.height);
+    if( ! bytesToUpload && uploadedImageSize.width > 0 && uploadedImageSize.height > 0 ) {
+        size_t size = width * height * 4;
+        bytesToUpload = malloc(size);
+        if( bytesToUpload ) {
+            freeBytes = YES;
+#if defined(__LITTLE_ENDIAN__)
+            uint8_t pattern[4] = { _color.four * 255.f, _color.three * 255.f, _color.two * 255.f, _color.one * 255.f };
+#elif defined(__BIG_ENDIAN__)
+            uint8_t pattern[4] = { _color.one * 255.f, _color.two * 255.f, _color.three * 255.f, _color.four * 255.f };
+#endif
+            memset_pattern4(bytesToUpload, pattern, size);
+        }
+    }
 
-    glBindTexture(GL_TEXTURE_2D, outputTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, _pixelFormat==GPUPixelFormatRGB ? GL_RGB : GL_RGBA, (int)uploadedImageSize.width, (int)uploadedImageSize.height, 0, (GLint)_pixelFormat, (GLenum)_pixelType, bytesToUpload);
+    if( bytesToUpload )
+        runSynchronouslyOnVideoProcessingQueue(^{
+            [GPUImageContext useImageProcessingContext];
+            [self initializeOutputTextureIfNeeded];
+            glBindTexture(GL_TEXTURE_2D, outputTexture);
+            glTexImage2D(GL_TEXTURE_2D, 0, _pixelFormat==GPUPixelFormatRGB ? GL_RGB : GL_RGBA, width, height, 0, (GLint)_pixelFormat, (GLenum)_pixelType, bytesToUpload);
+        });
+
+    if( freeBytes )
+        free(bytesToUpload);
+}
+
+- (void)setColor:(GPUVector4)color {
+    _color = color;
+    [self uploadBytes:nil];
 }
 
 - (void)updateDataFromBytes:(GLubyte *)bytesToUpload size:(CGSize)imageSize;
@@ -88,7 +125,8 @@
         return;
     }
 	
-	runAsynchronouslyOnVideoProcessingQueue(^{
+	runSynchronouslyOnVideoProcessingQueue(^{
+        [GPUImageContext useImageProcessingContext];
 
 		CGSize pixelSizeOfImage = [self outputImageSize];
     
