@@ -121,7 +121,7 @@
     }
 }
 
-- (NSInteger)nextAvailableTextureIndex;
+- (GLint)nextAvailableTextureIndex;
 {
 //    if ([_initialFilters count] > 0)
 //    {

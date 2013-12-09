@@ -126,7 +126,7 @@ NSString *const kGPUImageThreeInputTextureVertexShaderString = SHADER_STRING
 #pragma mark -
 #pragma mark GPUImageInput
 
-- (NSInteger)nextAvailableTextureIndex;
+- (GLint)nextAvailableTextureIndex;
 {
     if (hasSetSecondTexture)
     {

@@ -786,7 +786,7 @@ void dataProviderUnlockCallback (void *info, const void *data, size_t size)
     [self informTargetsAboutNewFrameAtTime:frameTime];
 }
 
-- (NSInteger)nextAvailableTextureIndex;
+- (GLint)nextAvailableTextureIndex;
 {
     return 0;
 }
