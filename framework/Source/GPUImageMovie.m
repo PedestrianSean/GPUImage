@@ -302,6 +302,7 @@
 {
     runSynchronouslyOnVideoProcessingQueue(^{
         displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(displayLinkCallback:)];
+        displayLink.frameInterval = 2; // most devices refresh @ 60Hz, but we only need 30Hz for good playback and running higher can tax the system when filters are applied
         [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:UITrackingRunLoopMode];
         [displayLink setPaused:YES];
