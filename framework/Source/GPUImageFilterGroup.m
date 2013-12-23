@@ -78,6 +78,10 @@
     [_terminalFilter setFrameProcessingCompletionBlock:frameProcessingCompletionBlock];
 }
 
+- (GLuint)textureForOutput {
+    return [_terminalFilter textureForOutput];
+}
+
 - (void (^)(GPUImageOutput *, CMTime))frameProcessingCompletionBlock;
 {
     return [_terminalFilter frameProcessingCompletionBlock];
