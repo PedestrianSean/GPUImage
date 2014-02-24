@@ -532,8 +532,10 @@ NSString *const kGPUImageYUVVideoRangeConversionForLAFragmentShaderString = SHAD
             NSError *error;
             [_inputCamera lockForConfiguration:&error];
             if (error == nil) {
+#if defined(__IPHONE_7_0)
                 [_inputCamera setActiveVideoMinFrameDuration:CMTimeMake(1, _frameRate)];
                 [_inputCamera setActiveVideoMaxFrameDuration:CMTimeMake(1, _frameRate)];
+#endif
             }
             [_inputCamera unlockForConfiguration];
             
@@ -561,8 +563,10 @@ NSString *const kGPUImageYUVVideoRangeConversionForLAFragmentShaderString = SHAD
             NSError *error;
             [_inputCamera lockForConfiguration:&error];
             if (error == nil) {
+#if defined(__IPHONE_7_0)
                 [_inputCamera setActiveVideoMinFrameDuration:kCMTimeInvalid];
                 [_inputCamera setActiveVideoMaxFrameDuration:kCMTimeInvalid];
+#endif
             }
             [_inputCamera unlockForConfiguration];
             
@@ -924,6 +928,12 @@ NSString *const kGPUImageYUVVideoRangeConversionForLAFragmentShaderString = SHAD
 - (CGFloat)averageFrameDurationDuringCapture;
 {
     return (totalFrameTimeDuringCapture / (CGFloat)(numberOfFramesCaptured - INITIALFRAMESTOIGNOREFORBENCHMARK)) * 1000.0;
+}
+
+- (void)resetBenchmarkAverage;
+{
+    numberOfFramesCaptured = 0;
+    totalFrameTimeDuringCapture = 0.0;
 }
 
 #pragma mark -
